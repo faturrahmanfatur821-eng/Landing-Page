@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://127.0.0.1:5500/praktikum1/index.html -->
+<html lang="id"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> FATHUR - Toko Daging</title>
+    <link rel="stylesheet" href="./FATHUR - Toko Daging_files/all.min.css">
+    <style>
+      /* Reset & Dasar */
+      * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+      body { background-color: #f7f6f2; color: #333; }
+
+      /* Header */
+      header {
+        background-color: #2c3e50; color: white;
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 15px 30px; position: sticky; top: 0; z-index: 100;
+      }
+      .logo { display: flex; align-items: center; font-size: 1.2rem; font-weight: bold; gap: 10px; }
+      .logo-icon { background-color: white; color: #2c3e50; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; }
+      
+      .search-bar { display: flex; flex: 1; max-width: 500px; margin: 0 20px; }
+      .search-bar input { width: 100%; padding: 10px 15px; border: none; border-radius: 5px 0 0 5px; outline: none; }
+      .search-bar button { padding: 10px 15px; background: white; border: none; border-left: 1px solid #ddd; border-radius: 0 5px 5px 0; cursor: pointer; }
+
+      .user-actions { display: flex; align-items: center; gap: 20px; }
+      .cart-icon { position: relative; cursor: pointer; background: white; color: #2c3e50; padding: 10px; border-radius: 5px; }
+      .cart-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; }
+
+      /* Konten */
+      .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+      h1 { margin-bottom: 20px; color: #2c3e50; }
+
+      /* Filter */
+      .filters { display: flex; margin-bottom: 30px; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; width: fit-content; }
+      .filter-btn { padding: 10px 20px; border: none; background: white; cursor: pointer; border-right: 1px solid #ddd; }
+      .filter-btn.active { background: #3498db; color: white; font-weight: bold; }
+
+      /* Product Grid */
+      .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+      .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+      .card img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
+      .card-body { padding: 15px; display: flex; flex-direction: column; flex: 1; }
+      .product-title { font-weight: 500; margin-bottom: 5px; }
+      .product-price { font-size: 1.2rem; font-weight: bold; color: #c0392b; margin-bottom: 10px; }
+      .btn-add-cart { margin-top: auto; background: #3498db; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+
+      /* Modal */
+      .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
+      .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; position: relative; }
+      .cart-list { list-style: none; margin: 15px 0; max-height: 200px; overflow-y: auto; }
+      .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+    </style>
+  </head>
+  <body>
+
+    <header>
+      <div class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-meat"></i></div> TOKO FATHUR
+    
+      </div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Cari jenis daging...">
+        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+      <div class="user-actions">
+        <div class="cart-icon" id="cartIcon">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <h1>Katalog Daging Segar</h1>
+
+      <div class="filters">
+        <button class="filter-btn active" data-filter="semua">Semua</button>
+        <button class="filter-btn" data-filter="ayam">Ayam</button>
+        <button class="filter-btn" data-filter="sapi">Sapi</button>
+        <button class="filter-btn" data-filter="kambing">Kambing</button>
+        <button class="filter-btn" data-filter="kuda">Kuda</button>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Ayam -->
+        <div class="card" data-category="ayam" data-name="Daging Ayam Broiler" data-price="35000" style="display: flex;">
+          <img src="./FATHUR - Toko Daging_files/daging ayam.jpg" alt="Ayam">
+          <div class="card-body">
+            <div class="product-title">Daging Ayam Broiler (1kg)</div>
+            <div class="product-price">Rp 35.000</div>
+            <button class="btn-add-cart">Tambah ke Keranjang</button>
+          </div>
+        </div>
+
+        <!-- Sapi -->
+        <div class="card" data-category="sapi" data-name="Daging Sapi Sirloin" data-price="140000" style="display: flex;">
+          <img src="./FATHUR - Toko Daging_files/daging sapi.jpg" alt="Sapi">
+          <div class="card-body">
+            <div class="product-title">Daging Sapi Sirloin (1kg)</div>
+            <div class="product-price">Rp 140.000</div>
+            <button class="btn-add-cart">Tambah ke Keranjang</button>
+          </div>
+        </div>
+
+        <!-- Kambing -->
+        <div class="card" data-category="kambing" data-name="Daging Kambing Muda" data-price="150000" style="display: flex;">
+          <img src="./FATHUR - Toko Daging_files/daging kambing.jpg" alt="Kambing">
+          <div class="card-body">
+            <div class="product-title">Daging Kambing Muda (1kg)</div>
+            <div class="product-price">Rp 150.000</div>
+            <button class="btn-add-cart">Tambah ke Keranjang</button>
+          </div>
+        </div>
+
+        <!-- Kuda -->
+        <div class="card" data-category="kuda" data-name="Daging Kuda Segar" data-price="120000" style="display: flex;">
+          <img src="./FATHUR - Toko Daging_files/daging kuda.jpg" alt="Kuda">
+          <div class="card-body">
+            <div class="product-title">Daging Kuda Segar (1kg)</div>
+            <div class="product-price">Rp 120.000</div>
+            <button class="btn-add-cart">Tambah ke Keranjang</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Keranjang -->
+    <div id="cartModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h2 style="border-bottom: 1px solid #ddd; padding-bottom: 10px;">Keranjang</h2>
+        <ul class="cart-list" id="cartList"><li>Kosong</li></ul>
+        <div style="font-weight: bold; text-align: right; margin-bottom: 15px;">Total: Rp <span id="cartTotal">0</span></div>
+        <button class="btn-add-cart" id="checkoutBtn" style="width: 100%; background: #27ae60;">Checkout</button>
+        <button id="closeCart" style="width: 100%; margin-top: 10px; background: none; border: none; cursor: pointer; color: #888;">Tutup</button>
+      </div>
+    </div>
+
+    <script>
+      let cartItems = [];
+      const cartBadge = document.getElementById('cartBadge');
+      const cartList = document.getElementById('cartList');
+      const cartTotal = document.getElementById('cartTotal');
+      const cartModal = document.getElementById('cartModal');
+
+      const formatRupiah = (num) => new Intl.NumberFormat('id-ID').format(num);
+
+      // Logika Keranjang
+      document.querySelectorAll('.btn-add-cart').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if(e.target.id === 'checkoutBtn') return;
+          const card = e.target.closest('.card');
+          const name = card.dataset.name;
+          const price = parseInt(card.dataset.price);
+          
+          cartItems.push({ name, price });
+          updateCart();
+          alert(name + " ditambahkan!");
+        });
+      });
+
+      function updateCart() {
+        cartBadge.textContent = cartItems.length;
+        cartList.innerHTML = cartItems.length ? '' : '<li>Kosong</li>';
+        let total = 0;
+        cartItems.forEach(item => {
+          total += item.price;
+          const li = document.createElement('li');
+          li.className = 'cart-item';
+          li.innerHTML = `<span>${item.name}</span> <span>Rp ${formatRupiah(item.price)}</span>`;
+          cartList.appendChild(li);
+        });
+        cartTotal.textContent = formatRupiah(total);
+      }
+
+      // Filter
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter;
+          document.querySelectorAll('.card').forEach(card => {
+            card.style.display = (filter === 'semua' || card.dataset.category === filter) ? 'flex' : 'none';
+          });
+        });
+      });
+
+      // Buka/Tutup Modal
+      document.getElementById('cartIcon').onclick = () => cartModal.style.display = 'flex';
+      document.getElementById('closeCart').onclick = () => cartModal.style.display = 'none';
+      
+      document.getElementById('checkoutBtn').onclick = () => {
+        if(cartItems.length > 0) {
+          alert("Terima kasih! Pesanan Anda sedang diproses.");
+          cartItems = [];
+          updateCart();
+          cartModal.style.display = 'none';
+        }
+      };
+
+      // Search
+      document.getElementById('searchInput').oninput = (e) => {
+        const val = e.target.value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+          const title = card.querySelector('.product-title').textContent.toLowerCase();
+          card.style.display = title.includes(val) ? 'flex' : 'none';
+        });
+      };
+    </script>
+  <!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+</body></html>
